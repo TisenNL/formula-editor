@@ -7,6 +7,34 @@ const FormulaEditor = () => {
   const previewRef = useRef(null);
   const inputRef = useRef(null);
 
+  // Botões da toolbar com comandos LaTeX comuns
+  const toolbarButtons = [
+    { label: 'Fração', command: '\\frac{a}{b}', icon: '½' },
+    { label: 'Raiz Quadrada', command: '\\sqrt{x}', icon: '√' },
+    { label: 'Potência', command: 'x^{n}', icon: 'x²' },
+    { label: 'Subscrito', command: 'x_{i}', icon: 'x₁' },
+    { label: 'Integral', command: '\\int_{a}^{b} f(x) dx', icon: '∫' },
+    { label: 'Somatório', command: '\\sum_{i=1}^{n} x_i', icon: 'Σ' },
+    { label: 'Limite', command: '\\lim_{x \\to \\infty}', icon: 'lim' },
+    { label: 'Derivada', command: '\\frac{d}{dx}', icon: 'd/dx' },
+    { label: 'Parênteses', command: '\\left( \\right)', icon: '( )' },
+    { label: 'Colchetes', command: '\\left[ \\right]', icon: '[ ]' },
+    { label: 'Chaves', command: '\\left\\{ \\right\\}', icon: '{ }' },
+    { label: 'Matrix', command: '\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix}', icon: '⬜' },
+    { label: 'Alpha', command: '\\alpha', icon: 'α' },
+    { label: 'Beta', command: '\\beta', icon: 'β' },
+    { label: 'Gamma', command: '\\gamma', icon: 'γ' },
+    { label: 'Delta', command: '\\delta', icon: 'δ' },
+    { label: 'Pi', command: '\\pi', icon: 'π' },
+    { label: 'Theta', command: '\\theta', icon: 'θ' },
+    { label: 'Lambda', command: '\\lambda', icon: 'λ' },
+    { label: 'Infinito', command: '\\infty', icon: '∞' },
+    { label: 'Maior ou igual', command: '\\geq', icon: '≥' },
+    { label: 'Menor ou igual', command: '\\leq', icon: '≤' },
+    { label: 'Não igual', command: '\\neq', icon: '≠' },
+    { label: 'Aproximadamente', command: '\\approx', icon: '≈' }
+  ];
+
   // Verificar se MathJax está carregado
   useEffect(() => {
     const checkMathJax = () => {
@@ -29,17 +57,11 @@ const FormulaEditor = () => {
     
     setIsProcessing(true);
     try {
-      // Limpa o conteúdo anterior
       previewRef.current.innerHTML = '';
-      
-      // Cria div para renderização
       const tempDiv = document.createElement('div');
       tempDiv.innerHTML = `$$${latexInput}$$`;
       previewRef.current.appendChild(tempDiv);
-      
-      // Renderiza com MathJax
       await window.MathJax.typesetPromise([previewRef.current]);
-      
     } catch (error) {
       console.error('Erro ao renderizar:', error);
       previewRef.current.innerHTML = `
@@ -65,11 +87,27 @@ const FormulaEditor = () => {
     if (mathJaxReady) {
       const timeoutId = setTimeout(() => {
         renderFormula();
-      }, 500); // Debounce de 500ms
-
+      }, 500);
       return () => clearTimeout(timeoutId);
     }
   }, [latexInput, mathJaxReady]);
+
+  // Inserir comando LaTeX na posição do cursor
+  const insertCommand = (command) => {
+    const textarea = inputRef.current;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const newValue = latexInput.substring(0, start) + command + latexInput.substring(end);
+    
+    setLatexInput(newValue);
+    
+    // Reposiciona o cursor
+    setTimeout(() => {
+      const newCursorPos = start + command.length;
+      textarea.setSelectionRange(newCursorPos, newCursorPos);
+      textarea.focus();
+    }, 0);
+  };
 
   return (
     <div className="container-fluid p-4" style={{ backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
@@ -86,6 +124,29 @@ const FormulaEditor = () => {
                 Crie fórmulas matemáticas usando LaTeX com preview em tempo real
               </p>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Toolbar */}
+      <div className="card mb-4 shadow-sm">
+        <div className="card-header bg-primary text-white">
+          <h5 className="mb-0">🛠️ Ferramentas LaTeX</h5>
+        </div>
+        <div className="card-body">
+          <div className="row g-2">
+            {toolbarButtons.map((button, index) => (
+              <div key={index} className="col-auto">
+                <button
+                  className="btn btn-outline-primary btn-sm"
+                  onClick={() => insertCommand(button.command)}
+                  title={button.label}
+                  style={{ minWidth: '50px' }}
+                >
+                  {button.icon}
+                </button>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -116,14 +177,14 @@ const FormulaEditor = () => {
               />
               <div className="mt-3">
                 <small className="text-muted">
-                  💡 Dica: Use comandos LaTeX como \frac{'{a}'}{'{b}'} para frações
+                  💡 Dica: Use os botões da toolbar para inserir comandos rapidamente
                 </small>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Preview Real */}
+        {/* Preview */}
         <div className="col-lg-6 mb-4">
           <div className="card shadow-sm h-100">
             <div className="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
