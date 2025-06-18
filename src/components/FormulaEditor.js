@@ -1,8 +1,75 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 const FormulaEditor = () => {
   const [latexInput, setLatexInput] = useState('\\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}');
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [mathJaxReady, setMathJaxReady] = useState(false);
+  const previewRef = useRef(null);
   const inputRef = useRef(null);
+
+  // Verificar se MathJax está carregado
+  useEffect(() => {
+    const checkMathJax = () => {
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        console.log('MathJax carregado!');
+        setMathJaxReady(true);
+        renderFormula();
+      } else {
+        setTimeout(checkMathJax, 100);
+      }
+    };
+    checkMathJax();
+  }, []);
+
+  // Renderizar fórmula
+  const renderFormula = async () => {
+    if (!window.MathJax || !window.MathJax.typesetPromise || !previewRef.current) {
+      return;
+    }
+    
+    setIsProcessing(true);
+    try {
+      // Limpa o conteúdo anterior
+      previewRef.current.innerHTML = '';
+      
+      // Cria div para renderização
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = `$$${latexInput}$$`;
+      previewRef.current.appendChild(tempDiv);
+      
+      // Renderiza com MathJax
+      await window.MathJax.typesetPromise([previewRef.current]);
+      
+    } catch (error) {
+      console.error('Erro ao renderizar:', error);
+      previewRef.current.innerHTML = `
+        <div class="alert alert-danger">
+          <strong>Erro na sintaxe LaTeX</strong><br>
+          Verifique se a fórmula está correta
+        </div>
+      `;
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  // Re-renderizar quando input muda
+  useEffect(() => {
+    if (!latexInput.trim()) {
+      if (previewRef.current) {
+        previewRef.current.innerHTML = '<div class="text-muted">Digite uma fórmula LaTeX para ver o preview</div>';
+      }
+      return;
+    }
+
+    if (mathJaxReady) {
+      const timeoutId = setTimeout(() => {
+        renderFormula();
+      }, 500); // Debounce de 500ms
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [latexInput, mathJaxReady]);
 
   return (
     <div className="container-fluid p-4" style={{ backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
@@ -56,32 +123,42 @@ const FormulaEditor = () => {
           </div>
         </div>
 
-        {/* Preview Placeholder */}
+        {/* Preview Real */}
         <div className="col-lg-6 mb-4">
           <div className="card shadow-sm h-100">
-            <div className="card-header bg-warning text-dark">
+            <div className="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
               <h5 className="mb-0">Preview</h5>
+              {isProcessing && (
+                <span className="badge bg-info">
+                  <div className="spinner-border spinner-border-sm me-1" role="status"></div>
+                  Processando...
+                </span>
+              )}
             </div>
             <div className="card-body d-flex align-items-center justify-content-center">
               <div 
-                className="w-100 text-center p-4"
+                ref={previewRef}
+                className="w-100 text-center"
                 style={{ 
                   minHeight: '400px', 
                   backgroundColor: 'white',
                   border: '1px solid #dee2e6',
                   borderRadius: '0.375rem',
+                  padding: '20px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  flexDirection: 'column'
+                  fontSize: '1.2em'
                 }}
               >
-                <h6>🔮 Preview em breve!</h6>
-                <p className="text-muted mb-2">Conteúdo LaTeX atual:</p>
-                <code className="bg-light p-2 rounded">{latexInput}</code>
-                <small className="text-muted mt-2">
-                  O MathJax será integrado no próximo passo!
-                </small>
+                {!mathJaxReady ? (
+                  <div className="text-muted">
+                    <div className="spinner-border spinner-border-sm me-2" role="status"></div>
+                    Carregando MathJax...
+                  </div>
+                ) : (
+                  <div className="text-muted">Digite uma fórmula LaTeX para ver o preview</div>
+                )}
               </div>
             </div>
           </div>
