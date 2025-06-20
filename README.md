@@ -1,70 +1,100 @@
-# Getting Started with Create React App
+# 📐 Editor de Fórmulas Matemáticas
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Editor moderno de fórmulas LaTeX com toolbar completa de 120+ comandos organizados em categorias.
 
-## Available Scripts
+## 🚀 Instalação e Execução
 
-In the project directory, you can run:
+### Pré-requisitos
+- Node.js 16+ 
+- npm 8+
 
-### `npm start`
+### 1. Clonar e instalar
+```bash
+git clone <url-do-repositorio>
+cd formula-editor
+npm install
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 2. Executar em desenvolvimento
+```bash
+npm start
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+A aplicação estará disponível em **http://localhost:3000**
 
-### `npm test`
+### 3. Build para produção
+```bash
+npm run build
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## ✨ Funcionalidades
 
-### `npm run build`
+- **🛠️ Toolbar Completa:** 120+ comandos LaTeX organizados em 12 categorias
+- **👁️ Preview em tempo real** com MathJax
+- **📥 Download SVG** das fórmulas renderizadas
+- **⚡ Exemplos rápidos** de fórmulas famosas
+- **🖋️ Fonte sans-serif** para melhor integração em textos
+- **📱 Interface responsiva** com Bootstrap
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🎯 Como Usar
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. **Use a toolbar** para inserir comandos LaTeX
+2. **Digite LaTeX** diretamente no editor
+3. **Veja o preview** em tempo real no painel direito
+4. **Baixe em SVG** quando a fórmula estiver pronta
+5. **Carregue exemplos** para começar rapidamente
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 📚 Categorias da Toolbar
 
-### `npm run eject`
+- **Formatação:** Bold, Italic, Caligráfico, Fraktur
+- **Estruturas:** Frações, raízes, potências, subscritos
+- **Operadores:** ±, ×, ÷, ·, ∗, ∘, ∙
+- **Relações:** ≥, ≤, ≠, ≈, ≡, ∝, ∼, ≅
+- **Cálculo:** ∫, ∬, ∭, ∮, Σ, ∏, lim, ∂, ∇
+- **Delimitadores:** ( ), [ ], { }, | |, ‖ ‖, ⟨ ⟩
+- **Setas:** →, ←, ⇒, ⇐, ↔, ⇔, ↦, ↑, ↓
+- **Gregas Min.:** α, β, γ, δ, ε, ζ, η, θ, ι, κ, λ, μ...
+- **Gregas Mai.:** Γ, Δ, Θ, Λ, Ξ, Π, Σ, Υ, Φ, Ψ, Ω
+- **Símbolos:** ∞, ∃, ∀, ∈, ∉, ⊂, ⊃, ∪, ∩, ∅, ℕ, ℤ, ℚ, ℝ, ℂ
+- **Matrizes:** 2x2, 3x3, determinantes, sistemas, vetores
+- **Funções:** sin, cos, tan, log, ln, max, min, gcd
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 📁 Estrutura do Projeto
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+formula-editor/
+├── public/
+│   └── index.html
+├── src/
+│   ├── components/
+│   │   └── FormulaEditor.js # Componente principal
+│   ├── App.js
+│   └── index.js
+└── package.json
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 🛠️ Tecnologias
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- **React 18** - Interface moderna e componentes
+- **Bootstrap 5.3** - Estilização responsiva  
+- **MathJax 3** - Renderização matemática SVG
+- **JavaScript ES6+** - Lógica da aplicação
 
-## Learn More
+## 🏆 Vantagens
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- ✅ **100% independente** - Funciona offline
+- ✅ **120+ comandos** organizados logicamente
+- ✅ **Interface moderna** e intuitiva
+- ✅ **Preview instantâneo** com MathJax
+- ✅ **Download SVG** de alta qualidade
+- ✅ **Zero dependências** externas
+- ✅ **Código limpo** e bem documentado
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 💡 Exemplos de LaTeX
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```latex
+\frac{-b \pm \sqrt{b^2 - 4ac}}{2a}           # Fórmula de Bhaskara
+\int_{a}^{b} f(x) dx = F(b) - F(a)          # Teorema Fundamental do Cálculo
+\sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}  # Série de Basel
+\begin{pmatrix} a & b \\ c & d \end{pmatrix}  # Matriz 2x2
+```
